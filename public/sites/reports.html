@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget & Aufgabenplaner - Berichte</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/reports.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-chart-line"></i>
+                <span>BudgetPlaner</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="budget.html" class="nav-link"><i class="fas fa-wallet"></i> Budget</a></li>
+                <li><a href="tasks.html" class="nav-link"><i class="fas fa-tasks"></i> Aufgaben</a></li>
+                <li><a href="#" class="nav-link active"><i class="fas fa-chart-bar"></i> Berichte</a></li>
+                <li><a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Einstellungen</a></li>
+                <li style="position: relative;">
+                    <button onclick="toggleMoreMenu()" class="nav-button"><i class="fas fa-ellipsis-h"></i> Mehr</button>
+                    <div class="more-menu" id="moreMenu">
+                        <ul>
+                            <li><a href="help.html"><i class="fas fa-question-circle"></i> Hilfe</a></li>
+                            <li><a href="support.html"><i class="fas fa-life-ring"></i> Support</a></li>
+                            <li><a href="feedback.html"><i class="fas fa-comment-dots"></i> Feedback</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <div class="nav-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="user-name">Max Mustermann</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="reports-header">
+            <div class="header-content">
+                <h1>Berichte & Analysen</h1>
+                <p>Detaillierte Einblicke in Ihre Finanzen</p>
+            </div>
+            <div class="header-actions">
+                <select class="time-period-select" id="timePeriodSelect">
+                    <option value="7">Letzte 7 Tage</option>
+                    <option value="30" selected>Letzter Monat</option>
+                    <option value="90">Letzte 3 Monate</option>
+                    <option value="365">Letztes Jahr</option>
+                </select>
+                <button class="btn-primary" id="exportBtn">
+                    <i class="fas fa-download"></i>
+                    PDF Export
+                </button>
+                <button class="btn-secondary" id="shareBtn">
+                    <i class="fas fa-share"></i>
+                    Teilen
+                </button>
+            </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card total-income">
+                <div class="summary-icon">
+                    <i class="fas fa-arrow-trend-up"></i>
+                </div>
+                <div class="summary-content">
+                    <h3>Gesamteinnahmen</h3>
+                    <p class="summary-value" id="totalIncome">€9,750.00</p>
+                    <span class="summary-change positive" id="incomeChange">+15.2%</span>
+                    <small class="summary-period">vs. Vormonat</small>
+                </div>
+            </div>
+            
+            <div class="summary-card total-expenses">
+                <div class="summary-icon">
+                    <i class="fas fa-arrow-trend-down"></i>
+                </div>
+                <div class="summary-content">
+                    <h3>Gesamtausgaben</h3>
+                    <p class="summary-value" id="totalExpenses">€6,540.25</p>
+                    <span class="summary-change negative" id="expensesChange">+8.7%</span>
+                    <small class="summary-period">vs. Vormonat</small>
+                </div>
+            </div>
+            
+            <div class="summary-card net-savings">
+                <div class="summary-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="summary-content">
+                    <h3>Netto-Ersparnisse</h3>
+                    <p class="summary-value" id="netSavings">€3,209.75</p>
+                    <span class="summary-change positive" id="savingsChange">+28.4%</span>
+                    <small class="summary-period">vs. Vormonat</small>
+                </div>
+            </div>
+            
+            <div class="summary-card savings-rate">
+                <div class="summary-icon">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="summary-content">
+                    <h3>Sparquote</h3>
+                    <p class="summary-value" id="savingsRate">32.9%</p>
+                    <span class="summary-change positive" id="rateChange">+4.2%</span>
+                    <small class="summary-period">vs. Vormonat</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Grid -->
+        <div class="reports-grid">
+            <!-- Einnahmen vs Ausgaben Trend -->
+            <div class="report-card wide">
+                <div class="card-header">
+                    <h3>Einnahmen vs. Ausgaben Trend</h3>
+                    <div class="chart-controls">
+                        <button class="chart-type-btn active" data-type="line">
+                            <i class="fas fa-chart-line"></i>
+                        </button>
+                        <button class="chart-type-btn" data-type="bar">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <canvas id="incomeExpenseTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Ausgaben nach Kategorien -->
+            <div class="report-card">
+                <div class="card-header">
+                    <h3>Ausgaben nach Kategorien</h3>
+                    <button class="btn-icon" id="categoryDetailsBtn">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <canvas id="categoryPieChart"></canvas>
+                    <div class="category-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #667eea;"></div>
+                            <span>Wohnen (40%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f093fb;"></div>
+                            <span>Lebensmittel (25%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4facfe;"></div>
+                            <span>Transport (15%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #43e97b;"></div>
+                            <span>Unterhaltung (10%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #fa709a;"></div>
+                            <span>Sonstiges (10%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monatlicher Vergleich -->
+            <div class="report-card">
+                <div class="card-header">
+                    <h3>Monatlicher Vergleich</h3>
+                    <div class="comparison-toggle">
+                        <button class="toggle-btn active" data-period="month">Monat</button>
+                        <button class="toggle-btn" data-period="quarter">Quartal</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <canvas id="monthlyComparisonChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Budget Performance -->
+            <div class="report-card wide">
+                <div class="card-header">
+                    <h3>Budget Performance</h3>
+                    <div class="performance-period">
+                        <span class="period-badge">November 2024</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="budget-performance-list">
+                        <div class="performance-item excellent">
+                            <div class="performance-category">
+                                <i class="fas fa-gamepad"></i>
+                                <span>Unterhaltung</span>
+                            </div>
+                            <div class="performance-data">
+                                <div class="spent-vs-budget">€95 / €150</div>
+                                <div class="performance-bar">
+                                    <div class="performance-progress" style="width: 63%"></div>
+                                </div>
+                                <div class="performance-status">63% - Sehr gut</div>
+                            </div>
+                        </div>
+                        
+                        <div class="performance-item good">
+                            <div class="performance-category">
+                                <i class="fas fa-utensils"></i>
+                                <span>Lebensmittel</span>
+                            </div>
+                            <div class="performance-data">
+                                <div class="spent-vs-budget">€320 / €400</div>
+                                <div class="performance-bar">
+                                    <div class="performance-progress" style="width: 80%"></div>
+                                </div>
+                                <div class="performance-status">80% - Gut</div>
+                            </div>
+                        </div>
+                        
+                        <div class="performance-item warning">
+                            <div class="performance-category">
+                                <i class="fas fa-home"></i>
+                                <span>Wohnen</span>
+                            </div>
+                            <div class="performance-data">
+                                <div class="spent-vs-budget">€650 / €800</div>
+                                <div class="performance-bar">
+                                    <div class="performance-progress" style="width: 81%"></div>
+                                </div>
+                                <div class="performance-status">81% - Aufmerksam</div>
+                            </div>
+                        </div>
+                        
+                        <div class="performance-item critical">
+                            <div class="performance-category">
+                                <i class="fas fa-car"></i>
+                                <span>Transport</span>
+                            </div>
+                            <div class="performance-data">
+                                <div class="spent-vs-budget">€180 / €200</div>
+                                <div class="performance-bar">
+                                    <div class="performance-progress" style="width: 90%"></div>
+                                </div>
+                                <div class="performance-status">90% - Kritisch</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Ausgaben -->
+            <div class="report-card">
+                <div class="card-header">
+                    <h3>Top Ausgaben</h3>
+                    <select class="top-expenses-filter" id="topExpensesFilter">
+                        <option value="week">Diese Woche</option>
+                        <option value="month" selected>Dieser Monat</option>
+                        <option value="year">Dieses Jahr</option>
+                    </select>
+                </div>
+                <div class="card-content">
+                    <div class="top-expenses-list" id="topExpensesList">
+                        <div class="expense-item">
+                            <div class="expense-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Miete</h4>
+                                <p class="expense-date">01. Nov 2024</p>
+                                <span class="expense-category">Wohnen</span>
+                            </div>
+                            <div class="expense-amount">€1,200.00</div>
+                        </div>
+                        
+                        <div class="expense-item">
+                            <div class="expense-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Autoversicherung</h4>
+                                <p class="expense-date">05. Nov 2024</p>
+                                <span class="expense-category">Transport</span>
+                            </div>
+                            <div class="expense-amount">€450.00</div>
+                        </div>
+                        
+                        <div class="expense-item">
+                            <div class="expense-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Wocheneinkauf</h4>
+                                <p class="expense-date">10. Nov 2024</p>
+                                <span class="expense-category">Lebensmittel</span>
+                            </div>
+                            <div class="expense-amount">€156.30</div>
+                        </div>
+                        
+                        <div class="expense-item">
+                            <div class="expense-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Stromrechnung</h4>
+                                <p class="expense-date">15. Nov 2024</p>
+                                <span class="expense-category">Wohnen</span>
+                            </div>
+                            <div class="expense-amount">€89.50</div>
+                        </div>
+                        
+                        <div class="expense-item">
+                            <div class="expense-icon">
+                                <i class="fas fa-film"></i>
+                            </div>
+                            <div class="expense-details">
+                                <h4>Netflix</h4>
+                                <p class="expense-date">20. Nov 2024</p>
+                                <span class="expense-category">Unterhaltung</span>
+                            </div>
+                            <div class="expense-amount">€15.99</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Finanzielle Gesundheit -->
+            <div class="report-card">
+                <div class="card-header">
+                    <h3>Finanzielle Gesundheit</h3>
+                    <div class="health-score">
+                        <div class="score-circle">
+                            <span class="score-value">78</span>
+                            <span class="score-label">Score</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="health-metrics">
+                        <div class="metric">
+                            <div class="metric-header">
+                                <span class="metric-name">Sparquote</span>
+                                <span class="metric-value good">32.9%</span>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-progress good" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-header">
+                                <span class="metric-name">Budget Einhaltung</span>
+                                <span class="metric-value warning">82%</span>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-progress warning" style="width: 82%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-header">
+                                <span class="metric-name">Ausgaben Stabilität</span>
+                                <span class="metric-value excellent">94%</span>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-progress excellent" style="width: 94%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-header">
+                                <span class="metric-name">Diversifikation</span>
+                                <span class="metric-value good">71%</span>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-progress good" style="width: 71%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="health-recommendations">
+                        <h4>Empfehlungen</h4>
+                        <ul>
+                            <li><i class="fas fa-lightbulb"></i> Reduzieren Sie Transport-Ausgaben um 10%</li>
+                            <li><i class="fas fa-target"></i> Erhöhen Sie Ihr Sparziel auf 35%</li>
+                            <li><i class="fas fa-chart-line"></i> Diversifizieren Sie Ihre Investitionen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/reports.js"></script>
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/nav.js"></script>
+</body>
+</html>

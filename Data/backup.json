@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2024-11-30T12:00:00.000Z",
+  "settings": {
+    "currency": "EUR",
+    "language": "de",
+    "theme": "light",
+    "dateFormat": "DD.MM.YYYY"
+  },
+  "categories": [
+    {
+      "id": 1,
+      "name": "Wohnung",
+      "icon": "fas fa-home",
+      "color": "#667eea",
+      "budget": 800,
+      "spent": 800,
+      "transactions": [
+        {
+          "id": 1001,
+          "amount": 800,
+          "description": "Miete November",
+          "date": "2024-11-01",
+          "type": "expense"
+        }
+      ]
+    }
+  ],
+  "income": [
+    {
+      "id": 2001,
+      "amount": 3200,
+      "description": "Gehalt November",
+      "date": "2024-11-01",
+      "category": "Gehalt",
+      "type": "income"
+    }
+  ],
+  "reports": {
+    "monthlyData": {
+      "2024-01": { "income": 3200, "expenses": 2100, "savings": 1100 }
+    },
+    "weeklyData": {
+      "2024-W47": { "income": 0, "expenses": 287.49, "savings": -287.49 }
+    }
+  },
+  "goals": [
+    {
+      "id": 3001,
+      "title": "Notgroschen aufbauen",
+      "targetAmount": 5000,
+      "currentAmount": 2500,
+      "deadline": "2024-12-31",
+      "category": "Sparen",
+      "priority": "high"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 4001,
+      "title": "Budget für Dezember planen",
+      "completed": false,
+      "dueDate": "2024-12-01",
+      "priority": "high"
+    }
+  ]
+}

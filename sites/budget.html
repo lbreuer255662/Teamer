@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget - BudgetPlaner</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/budget.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-chart-line"></i>
+                <span>BudgetPlaner</span>
+            </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#" class="nav-link active"><i class="fas fa-wallet"></i> Budget</a></li>
+                    <li><a href="tasks.html" class="nav-link"><i class="fas fa-tasks"></i> Aufgaben</a></li>
+                    <li><a href="reports.html" class="nav-link"><i class="fas fa-chart-bar"></i> Berichte</a></li>
+                    <li><a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Einstellungen</a></li>
+                    <li style="position: relative;">
+                        <button onclick="toggleMoreMenu()" class="nav-button"><i class="fas fa-ellipsis-h"></i> Mehr</button>
+                        <div class="more-menu" id="moreMenu">
+                            <ul>
+                                <li><a href="help.html"><i class="fas fa-question-circle"></i> Hilfe</a></li>
+                                <li><a href="support.html"><i class="fas fa-life-ring"></i> Support</a></li>
+                                <li><a href="feedback.html"><i class="fas fa-comment-dots"></i> Feedback</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            <div class="nav-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="user-name">Max Mustermann</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="budget-header">
+            <div class="header-content">
+                <h1>Budget Verwaltung</h1>
+                <p>Verwalten Sie Ihre monatlichen Budgets und Ausgabenkategorien</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" id="addCategoryBtn">
+                    <i class="fas fa-plus"></i>
+                    Kategorie hinzufügen
+                </button>
+                <button class="btn-secondary" id="exportBudgetBtn">
+                    <i class="fas fa-download"></i>
+                    Budget exportieren
+                </button>
+            </div>
+        </header>
+
+        <!-- Budget Overview Cards -->
+        <div class="budget-overview">
+            <div class="overview-card total-budget">
+                <div class="card-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Gesamtbudget</h3>
+                    <p class="amount">€2,500.00</p>
+                    <span class="period">November 2024</span>
+                </div>
+            </div>
+            
+            <div class="overview-card spent">
+                <div class="card-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Ausgegeben</h3>
+                    <p class="amount">€1,245.00</p>
+                    <span class="percentage">49.8% des Budgets</span>
+                </div>
+            </div>
+            
+            <div class="overview-card remaining">
+                <div class="card-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Verbleibendes Budget</h3>
+                    <p class="amount">€1,255.00</p>
+                    <span class="days-left">15 Tage verbleibend</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Categories -->
+        <div class="budget-main">
+            <div class="categories-section">
+                <div class="section-header">
+                    <h2>Budget Kategorien</h2>
+                    <div class="period-selector">
+                        <select id="budgetPeriod">
+                            <option value="2024-11">November 2024</option>
+                            <option value="2024-10">Oktober 2024</option>
+                            <option value="2024-09">September 2024</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- Categories will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Budget Chart -->
+            <div class="chart-section">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Budget Verteilung</h3>
+                        <div class="chart-controls">
+                            <button class="chart-toggle active" data-chart="pie">
+                                <i class="fas fa-chart-pie"></i>
+                            </button>
+                            <button class="chart-toggle" data-chart="bar">
+                                <i class="fas fa-chart-bar"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget History -->
+        <div class="budget-history">
+            <div class="history-header">
+                <h2>Budget Verlauf</h2>
+                <div class="history-controls">
+                    <select id="historyPeriod">
+                        <option value="6">Letzte 6 Monate</option>
+                        <option value="12">Letztes Jahr</option>
+                        <option value="24">Letzte 2 Jahre</option>
+                    </select>
+                </div>
+            </div>
+            <div class="history-chart">
+                <canvas id="historyChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Adding/Editing Categories -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Kategorie hinzufügen</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="categoryForm" class="modal-body">
+                <div class="form-group">
+                    <label for="categoryName">Kategorie Name</label>
+                    <input type="text" id="categoryName" name="categoryName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoryIcon">Icon</label>
+                    <div class="icon-selector">
+                        <div class="icon-option active" data-icon="fas fa-home">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-utensils">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-car">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-gamepad">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-shopping-bag">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-heartbeat">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-graduation-cap">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-plane">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                    </div>
+                    <input type="hidden" id="selectedIcon" name="selectedIcon" value="fas fa-home">
+                </div>
+                
+                <div class="form-group">
+                    <label for="budgetAmount">Budget Betrag (€)</label>
+                    <input type="number" id="budgetAmount" name="budgetAmount" min="0" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoryColor">Farbe</label>
+                    <div class="color-selector">
+                        <div class="color-option active" data-color="#667eea" style="background: #667eea;"></div>
+                        <div class="color-option" data-color="#27ca3f" style="background: #27ca3f;"></div>
+                        <div class="color-option" data-color="#e74c3c" style="background: #e74c3c;"></div>
+                        <div class="color-option" data-color="#f39c12" style="background: #f39c12;"></div>
+                        <div class="color-option" data-color="#9b59b6" style="background: #9b59b6;"></div>
+                        <div class="color-option" data-color="#3498db" style="background: #3498db;"></div>
+                    </div>
+                    <input type="hidden" id="selectedColor" name="selectedColor" value="#667eea">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Abbrechen</button>
+                    <button type="submit" class="btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/budget.js"></script>
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/nav.js"></script>
+</body>
+</html>

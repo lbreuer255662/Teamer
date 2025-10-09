@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aufgaben - Budget & Aufgabenplaner</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/tasks.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-chart-line"></i>
+                <span>BudgetPlaner</span>
+            </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="budget.html" class="nav-link"><i class="fas fa-wallet"></i> Budget</a></li>
+                    <li><a href="#" class="nav-link active"><i class="fas fa-tasks"></i> Aufgaben</a></li>
+                    <li><a href="reports.html" class="nav-link"><i class="fas fa-chart-bar"></i> Berichte</a></li>
+                    <li><a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Einstellungen</a></li>
+                    <li style="position: relative;">
+                        <button onclick="toggleMoreMenu()" class="nav-button"><i class="fas fa-ellipsis-h"></i> Mehr</button>
+                        <div class="more-menu" id="moreMenu">
+                            <ul>
+                                <li><a href="help.html"><i class="fas fa-question-circle"></i> Hilfe</a></li>
+                                <li><a href="support.html"><i class="fas fa-life-ring"></i> Support</a></li>
+                                <li><a href="feedback.html"><i class="fas fa-comment-dots"></i> Feedback</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            <div class="nav-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="user-name">Max Mustermann</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="tasks-header">
+            <div class="header-content">
+                <h1>Aufgaben</h1>
+                <p>Verwalten Sie Ihre To-Do Liste und Projekte</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" id="addTaskBtn">
+                    <i class="fas fa-plus"></i>
+                    Neue Aufgabe
+                </button>
+                <button class="btn-secondary">
+                    <i class="fas fa-filter"></i>
+                    Filter
+                </button>
+            </div>
+        </header>
+
+        <!-- Task Stats -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-icon">
+                    <i class="fas fa-list"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Gesamt</h3>
+                    <p class="stat-value" id="totalTasks">35</p>
+                    <span class="stat-change">Aufgaben</span>
+                </div>
+            </div>
+            
+            <div class="stat-card completed">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Erledigt</h3>
+                    <p class="stat-value" id="completedTasks">23</p>
+                    <span class="stat-change positive">65.7%</span>
+                </div>
+            </div>
+            
+            <div class="stat-card pending">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Offen</h3>
+                    <p class="stat-value" id="pendingTasks">12</p>
+                    <span class="stat-change">34.3%</span>
+                </div>
+            </div>
+            
+            <div class="stat-card overdue">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Überfällig</h3>
+                    <p class="stat-value" id="overdueTasks">5</p>
+                    <span class="stat-change negative">14.3%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Filters -->
+        <div class="task-filters">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">Alle</button>
+                <button class="filter-tab" data-filter="pending">Offen</button>
+                <button class="filter-tab" data-filter="completed">Erledigt</button>
+                <button class="filter-tab" data-filter="overdue">Überfällig</button>
+            </div>
+            <div class="filter-options">
+                <select class="priority-filter">
+                    <option value="all">Alle Prioritäten</option>
+                    <option value="high">Hoch</option>
+                    <option value="medium">Mittel</option>
+                    <option value="low">Niedrig</option>
+                </select>
+                <select class="category-filter">
+                    <option value="all">Alle Kategorien</option>
+                    <option value="work">Arbeit</option>
+                    <option value="personal">Persönlich</option>
+                    <option value="finance">Finanzen</option>
+                    <option value="health">Gesundheit</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="tasks-container">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3>Aufgabenliste</h3>
+                    <div class="view-options">
+                        <button class="view-btn active" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="view-btn" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="task-list" id="taskList">
+                        <!-- Tasks will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Task Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Neue Aufgabe hinzufügen</h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label for="taskTitle">Titel *</label>
+                        <input type="text" id="taskTitle" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="taskDescription">Beschreibung</label>
+                        <textarea id="taskDescription" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskPriority">Priorität</label>
+                            <select id="taskPriority" name="priority">
+                                <option value="low">Niedrig</option>
+                                <option value="medium" selected>Mittel</option>
+                                <option value="high">Hoch</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taskCategory">Kategorie</label>
+                            <select id="taskCategory" name="category">
+                                <option value="personal">Persönlich</option>
+                                <option value="work">Arbeit</option>
+                                <option value="finance">Finanzen</option>
+                                <option value="health">Gesundheit</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="taskDueDate">Fälligkeitsdatum</label>
+                        <input type="date" id="taskDueDate" name="dueDate">
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="cancelTask">Abbrechen</button>
+                        <button type="submit" class="btn-primary">Aufgabe erstellen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/tasks.js"></script>
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/nav.js"></script>
+</body>
+</html>
