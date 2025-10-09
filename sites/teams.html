@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams - Budget & Aufgabenplaner</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/teams.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../js/nav.js" defer></script>
+    </head>
+    <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-chart-line"></i>
+                <span>BudgetPlaner</span>
+            </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="budget.html" class="nav-link"><i class="fas fa-wallet"></i> Budget</a></li>
+                    <li><a href="tasks.html" class="nav-link"><i class="fas fa-tasks"></i> Aufgaben</a></li>
+                    <li><a href="reports.html" class="nav-link"><i class="fas fa-chart-bar"></i> Berichte</a></li>
+                    <li><a href="teams.html" class="nav-link active"><i class="fas fa-users"></i> Teams</a></li>
+                    <li style="position: relative;">
+                        <button onclick="toggleMoreMenu()" class="nav-button"><i class="fas fa-ellipsis-h"></i> Mehr</button>
+                        <div class="more-menu" id="moreMenu">
+                            <ul>
+                                <li><a href="help.html"><i class="fas fa-question-circle"></i> Hilfe</a></li>
+                                <li><a href="support.html"><i class="fas fa-life-ring"></i> Support</a></li>
+                                <li><a href="feedback.html"><i class="fas fa-comment-dots"></i> Feedback</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            <div class="nav-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="user-name">Max Mustermann</span>
+            </div>
+        </div>
+    </nav>
+    </body>
+</html>
