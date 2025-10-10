@@ -152,7 +152,7 @@ function initCategoryChart() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             cutout: '65%',
             plugins: {
                 legend: {
